@@ -1,0 +1,30 @@
+{
+  "cli": {
+    "version": ">= 10.0.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_BACKEND_API_SERVER": "https://showshak-api.vercel.app/api/v1"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_BACKEND_API_SERVER": "https://showshak-api.vercel.app/api/v1"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
