@@ -1,23 +1,26 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Platform,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
-import { Link, Redirect, router } from "expo-router";
-import { images } from "@/constants";
-import { Checkbox, Divider, Text as PText } from "react-native-paper";
-import { StatusBar } from "expo-status-bar";
 import useIsAuthenticated from "@/hooks/useIsAuthenticated";
+import { Redirect, router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  Text,
+  View
+} from "react-native";
+import { Checkbox, Text as PText } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const index = () => {
   const [checked, setChecked] = useState(false);
   const { isAuthenticated, loading } = useIsAuthenticated();
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSplash(false)
+    }, 3000);
+  })
 
   if (!loading && isAuthenticated) return <Redirect href={"/home"} />;
 

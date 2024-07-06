@@ -1,24 +1,20 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "@/constants";
-import FormField from "../../components/FormField";
 import CustomButton from "@/components/CustomButton";
-import { Link, router } from "expo-router";
-import { Checkbox } from "react-native-paper";
+import Spinner from "@/components/Spinner";
 import { useLoginMutation } from "@/redux/api/user.api";
-import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import Spinner from "@/components/Spinner";
+import { Link, router } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  ScrollView,
+  Text,
+  View
+} from "react-native";
+import { Checkbox } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
+import FormField from "../../components/FormField";
 
 const SignIn = () => {
   const dispatch = useDispatch();

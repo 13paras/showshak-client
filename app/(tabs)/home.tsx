@@ -1,37 +1,24 @@
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Link,
-  Redirect,
-  router,
-  useLocalSearchParams,
-  usePathname,
-} from "expo-router";
-import { Button, TextInput as PaperInput } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
+import SearchInput from "@/components/SearchInput";
+import useIsAuthenticated from "@/hooks/useIsAuthenticated";
 import { useGetUserQuery } from "@/redux/api/user.api";
 import { activationLinks } from "@/utils/data";
+import { AntDesign } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { JwtPayload, jwtDecode } from "jwt-decode";
-import useIsAuthenticated from "@/hooks/useIsAuthenticated";
-import { CustomPayload } from "@/types/types";
-import { useSelector } from "react-redux";
-import SearchInput from "@/components/SearchInput";
+import { router, usePathname } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import filter from "lodash.filter";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Button } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface ActivationLinkProps {
   name: string;
@@ -88,10 +75,7 @@ const Home = () => {
     );
   };
 
-<<<<<<< HEAD
-  // console.log(search);
-=======
-  useEffect(() => {
+  /*   useEffect(() => {
     const fetchUser = async () => {
       const token = await AsyncStorage.getItem("jwt");
 
@@ -103,10 +87,15 @@ const Home = () => {
       }
     };
     fetchUser();
-  }, []);
+  }, []); */
 
-  
->>>>>>> 10fe96aff5be4f8a1e3960c06ae772e79f6fcf3a
+  const [showSplash, setShowSplash] = useState<boolean>(true);
+
+  /*   useEffect(() => {
+    setTimeout(() => {
+      setShowSplash(false)
+    }, 3000);
+  }) */
   return (
     <SafeAreaView className="bg-blue-50 h-full mx-1">
       <StatusBar backgroundColor="#202020" style="light" />

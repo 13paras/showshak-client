@@ -1,6 +1,6 @@
-import { View, Text, TextInput, TouchableOpacity, Image, KeyboardTypeOptions } from "react-native";
-import React, { useState } from "react";
 import { icons } from "@/constants";
+import React, { useState } from "react";
+import { Image, KeyboardTypeOptions, TextInput, TouchableOpacity, View } from "react-native";
 
 type FormFieldTypes = {
   title: string;

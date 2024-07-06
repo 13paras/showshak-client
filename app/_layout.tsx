@@ -1,10 +1,10 @@
-import { View, Text } from "react-native";
-import React, { useEffect, useRef } from "react";
+import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
+import { store } from "@/redux/store";
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { DefaultTheme, PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
-import { store } from "@/redux/store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,6 +55,7 @@ const theme = {
 };
 
 const RootLayout = () => {
+  const [appIsReady, setAppIsReady] = useState(false);
   // Load fonts
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("@/assets/fonts/Poppins-Black.ttf"),
@@ -68,7 +69,7 @@ const RootLayout = () => {
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (error) throw error;
 
     if (fontsLoaded) {
@@ -76,25 +77,49 @@ const RootLayout = () => {
     }
   }, [fontsLoaded, error]);
 
-  if (!fontsLoaded && !error) return null;
+  if (!fontsLoaded && !error) return null; */
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        if (error) throw error;
+        // Increase this delay to simulate longer loading time
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds delay
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        if (fontsLoaded) {
+          setAppIsReady(true);
+        }
+      }
+    }
+  
+    prepare();
+  }, [fontsLoaded, error]);
+
+  if (!appIsReady) {
+    return null;
+  }
 
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="search/[query]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="referal/[query]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="profile" options={{ headerShown: false }} />
-        </Stack>
+        <AnimatedSplashScreen>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="search/[query]"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="referal/[query]"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="profile" options={{ headerShown: false }} />
+          </Stack>
+        </AnimatedSplashScreen>
       </PaperProvider>
     </Provider>
   );
