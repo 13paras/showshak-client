@@ -1,10 +1,11 @@
 import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
 import { store } from "@/redux/store";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { DefaultTheme, PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
+import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -82,20 +83,33 @@ const RootLayout = () => {
   useEffect(() => {
     async function prepare() {
       try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
         if (error) throw error;
-        // Increase this delay to simulate longer loading time
-        await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds delay
+        // Artificially delay for two seconds to simulate a slow loading
+        // experience. Please remove this if you copy and paste the code!
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
         console.warn(e);
       } finally {
-        if (fontsLoaded) {
-          setAppIsReady(true);
-        }
+        // Tell the application to render
+        setAppIsReady(true);
       }
     }
-  
+
     prepare();
   }, [fontsLoaded, error]);
+
+  useEffect(() => {
+    if (appIsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
 
   if (!appIsReady) {
     return null;

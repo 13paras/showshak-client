@@ -4,13 +4,13 @@
     "slug": "showshak",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/showshak334.png",
+    "icon": "./assets/images/2icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/showshak334.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#092b99"
     },
     "ios": {
       "supportsTablet": true,
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/showshak334.png",
+        "foregroundImage": "./assets/images/1adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.showshak"

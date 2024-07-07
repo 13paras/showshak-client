@@ -15,24 +15,18 @@ export default function AnimatedSplashScreen({
   const textAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const hideSplashScreen = async () => {
-      await SplashScreen.hideAsync();
-    };
-  
     Animated.sequence([
       Animated.timing(animation, {
         toValue: 1,
-        duration: 2000,
+        duration: 3000,
         useNativeDriver: true,
       }),
       Animated.timing(textAnimation, {
         toValue: 1,
-        duration: 1000,
+        duration: 2000,
         useNativeDriver: true,
-      })
-    ]).start(() => {
-      hideSplashScreen();
-    });
+      }),
+    ]).start();
   }, []);
 
   return (
@@ -82,7 +76,7 @@ export default function AnimatedSplashScreen({
             },
           ]}
         >
-          showshak
+          Showshak
         </Animated.Text>
       </Animated.View>
       <Animated.View style={[styles.content, { opacity: animation }]}>
@@ -103,14 +97,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   splashImage: {
-    width: width * 0.3,
-    height: height * 0.3,
+    width: width * 0.5,
+    height: height * 0.5,
   },
   text: {
     fontSize: 32,
     fontWeight: "bold",
     marginTop: 20,
-    color: "#000",
+    color: "#ffffff", 
+    fontFamily: "Poppins-Bold", 
   },
   content: {
     flex: 1,

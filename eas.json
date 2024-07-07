@@ -19,6 +19,9 @@
       }
     },
     "production": {
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
         "EXPO_PUBLIC_BACKEND_API_SERVER": "https://showshak-api.vercel.app/api/v1"
       }
