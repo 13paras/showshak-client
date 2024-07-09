@@ -1,5 +1,14 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, Dimensions, View, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { Dimensions, View, StyleSheet } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSequence,
+  withDelay,
+  Easing,
+  interpolate,
+} from "react-native-reanimated";
 import * as SplashScreen from "expo-splash-screen";
 
 const { width, height } = Dimensions.get("window");
@@ -11,23 +20,53 @@ interface AnimatedSplashScreenProps {
 export default function AnimatedSplashScreen({
   children,
 }: AnimatedSplashScreenProps) {
-  const animation = useRef(new Animated.Value(0)).current;
-  const textAnimation = useRef(new Animated.Value(0)).current;
+  const animation = useSharedValue(0);
+  const textAnimation = useSharedValue(0);
 
   useEffect(() => {
-    Animated.sequence([
-      Animated.timing(animation, {
-        toValue: 1,
-        duration: 3000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(textAnimation, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    animation.value = withTiming(1, {
+      duration: 2000,
+      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+    });
+    textAnimation.value = withDelay(
+      1000,
+      withTiming(1, {
+        duration: 1500,
+        easing: Easing.out(Easing.back(1.5)),
+      })
+    );
   }, []);
+
+  const splashScreenStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(animation.value, [0, 1], [1, 1]),
+  }));
+
+  const splashImageStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: interpolate(animation.value, [0, 1], [0.8, 1]),
+      },
+    ],
+  }));
+
+  const textStyle = useAnimatedStyle(() => ({
+    opacity: textAnimation.value,
+    transform: [
+      {
+        translateY: interpolate(textAnimation.value, [0, 1], [-20, 0]),
+      },
+      {
+        scale: interpolate(textAnimation.value, [0, 1], [0.5, 1]),
+      },
+      {
+        rotate: `${interpolate(textAnimation.value, [0, 1], [-10, 0])}deg`,
+      },
+    ],
+  }));
+
+  const contentStyle = useAnimatedStyle(() => ({
+    opacity: animation.value,
+  }));
 
   return (
     <View style={styles.container}>
@@ -35,51 +74,17 @@ export default function AnimatedSplashScreen({
         style={[
           StyleSheet.absoluteFillObject,
           styles.splashScreen,
-          {
-            opacity: animation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1, 1],
-            }),
-          },
+          splashScreenStyle,
         ]}
       >
+        <Animated.Text style={[styles.text, textStyle]}>Showshak</Animated.Text>
         <Animated.Image
-          source={require("../assets/images/showshak334.png")}
-          style={[
-            styles.splashImage,
-            {
-              transform: [
-                {
-                  scale: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.8, 1],
-                  }),
-                },
-              ],
-            },
-          ]}
+          source={require("../assets/images/3splash.png")}
+          style={[styles.splashImage, splashImageStyle]}
           resizeMode="contain"
         />
-        <Animated.Text
-          style={[
-            styles.text,
-            {
-              opacity: textAnimation,
-              transform: [
-                {
-                  translateY: textAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [20, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          Showshak
-        </Animated.Text>
       </Animated.View>
-      <Animated.View style={[styles.content, { opacity: animation }]}>
+      <Animated.View style={[styles.content, contentStyle]}>
         {children}
       </Animated.View>
     </View>
@@ -101,11 +106,11 @@ const styles = StyleSheet.create({
     height: height * 0.5,
   },
   text: {
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: "bold",
     marginTop: 20,
-    color: "#ffffff", 
-    fontFamily: "Poppins-Bold", 
+    color: "#ffffff",
+    fontFamily: "Poppins-Bold",
   },
   content: {
     flex: 1,

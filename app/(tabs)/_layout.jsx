@@ -1,10 +1,19 @@
 import TabBar from "@/components/TabBar";
 import { Tabs } from "expo-router";
 import React from "react";
+import { Linking, Platform } from "react-native";
 
 const TabsLayout = () => {
+  const makePhoneCall = () => {
+    if (Platform.OS === "android") {
+      Linking.openURL("tel: +1804-206-5106");
+    } else {
+      Linking.openURL("telprompt: +1804-206-5106");
+    }
+  };
+
   return (
-    <Tabs tabBar={(props) => <TabBar {...props} />}>
+    <Tabs tabBar={(props) => <TabBar {...props} makePhoneCall={makePhoneCall} />}>
       <Tabs.Screen
         name="chat"
         options={{
@@ -26,13 +35,13 @@ const TabsLayout = () => {
           ), */
         }}
       />
-      {/* <Tabs.Screen
+      <Tabs.Screen
         name="user"
         options={{
           title: "User",
           headerShown: false,
         }}
-        /> */}
+      />
     </Tabs>
   );
 };
